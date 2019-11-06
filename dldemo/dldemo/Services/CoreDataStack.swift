@@ -9,10 +9,14 @@
 import Foundation
 import CoreData
 
+private let RESOURCE_NAME = "dldemo"
+private let EXTENSION = "momd"
+private let SQLITE_DIRECTORY_NAME = "dldemo.sqlite"
+
 class CoreDataStack {
 
     lazy var managedObjectModel: NSManagedObjectModel = {
-        let modelUrl = Bundle.main.url(forResource: "dldemo", withExtension: "momd")!
+        let modelUrl = Bundle.main.url(forResource: RESOURCE_NAME, withExtension: EXTENSION)!
         return NSManagedObjectModel(contentsOf: modelUrl)!
     }()
     
@@ -20,7 +24,7 @@ class CoreDataStack {
     lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
         let coordinator: NSPersistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
         let applicationDocumentsDirectory: URL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last!
-        let persistentStoreUrl: URL = applicationDocumentsDirectory.appendingPathComponent("dldemo.sqlite")
+        let persistentStoreUrl: URL = applicationDocumentsDirectory.appendingPathComponent(SQLITE_DIRECTORY_NAME)
         
         do {
             try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: persistentStoreUrl, options: nil)

@@ -24,13 +24,13 @@ class DeliveryListPresenter: ViewToPresenterProtocol {
     var interactor: PresenterToInteractorProtocol?
     var router: PresenterToRouterProtocol?
     var networkManager = NetworkManager()
-    private var fetchingInProgress = false
+    private var isFetchingInProgress = false
     private var isPullToRefresh = false
     
     func fetchDeliveryList(_ offset:Int,_ limit:Int,_ isPullToRefresh: Bool) {
         view?.stopPullToRefresh()
-        if !fetchingInProgress {
-            fetchingInProgress = true
+        if !isFetchingInProgress {
+            isFetchingInProgress = true
             view?.removeOfflineView()
             self.isPullToRefresh = isPullToRefresh
             self.isPullToRefresh ? view?.startPullToRefresh() : view?.startSpinner()
@@ -58,14 +58,14 @@ extension DeliveryListPresenter: InteractorToPresenterProtocol {
             view?.stopSpinner()
             view?.showDeliveryList(deliveryList: deliveryList)
         }
-        fetchingInProgress = false
+        isFetchingInProgress = false
     }
     
     func deliveryFetchFailed(_ error: AppError) {
         self.isPullToRefresh ? view?.stopPullToRefresh() : view?.stopSpinner()
         view?.showOfflineView()
         view?.showErrorBanner(error.localizedDescription)
-        fetchingInProgress = false
+        isFetchingInProgress = false
     }
     
 }
