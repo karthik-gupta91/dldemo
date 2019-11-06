@@ -40,18 +40,22 @@ This repository is written in swift 5 (latest swift version) and architecture de
 
 ## Assumptions
 
-### Views assumption- offline
-* Delivery List Screen: App should show offline page when cache not available otherwise should fetch 20 deliveries from stored data and display it. scroll to bottom should fetch another 20 deliveries if available otherwise show network error. pull to refresh should not change any data. 
-* Detail List Screen: App should show location description and profile image, but map should not load.
-
-### Views assumption- online
-* Delivery List Screen: App should fetch 20 deliveries from network and display it, if error occured it should fetch data from cache or display error, in case no cache available. scroll to bottom should fetch another 20 deliveries from network otherwise show network error. pull to refresh should show new deliveries available on server by refreshing the list. 
-* Detail List Screen: App should show location detail,marker on map, location description and profile image.
-
-### Data assumption for cache
-* Data should be saved on the basis of "id". if an object is already present with the same "id" in cache, app should update that object, otherwise save it. Deletion of data should not be implemented for now.
-* Fetching of online and offline data should be based on offset and limit.
-
+#### App assumptions
+* I assume that list would be better displayed in the portrait mode. As we are not displaying many things it would be better if we make it for "iPhone Portrait mode" only
+#### Network offline assumptions
+* I assume that app should show offline page when internet is off and cache not available.So creating a offline page and checking connectivity is required.
+* I assume If cache available in offline mode it should fetch deliveries from stored data and display it. So creating a core data model and a sqlite store to store the cache.
+* I assume scroll to bottom should fetch another 20 deliveries if available otherwise show network error. So displaying network offline error if cache not available.
+#### Network online assumptions
+* I assume that app should first try to fetch data from network, in case it fails it should fetch data from cache and show error in case that also fails. So first check connectivity and when error occured should go to offline fetching principle.
+#### Tableview assumptions
+* I assume if description text is too much large it should be displayed. so tableView row should use automatic dimension.
+* I assume the Image size should be constant to able to put both text and image in the row. So setting imageview size constant.
+#### DeliveryDetail View assumptions
+* I assume that app should show location description and profile image, but map should not be loaded when internet is off. and map will be loaded if internet is on. So creating view accordingly.
+#### Data saving fetching assumptions
+* I assume that data should be saved on the basis of "id". if an object is already present with the same "id" in cache, app should update that object, otherwise save it as new object. I assume deletion of data is not supported for now.
+* I assume fetching of online and offline data should be based on offset and limit to implement pagination.
 
 ## Implementations
 
@@ -88,7 +92,10 @@ This repository is written in swift 5 (latest swift version) and architecture de
 Unit test cases are implemented without using any framework. Mock classes are written in order to execute the test cases for different test files. Saving the information in local variable(InputCallbackResults) of Mock classes in order to verify/assert the case.
 
 ### Execution of test cases
-* CMD+U to run test cases
+* Go to Product Tab > Scheme > Select Edit Scheme
+* Select Test > Choose option > Select Code Coverage
+* Now close the scheme.
+* To run test cases press CMD+U
 * CMD+9 to check the code coverage, Logs
 
 ```
